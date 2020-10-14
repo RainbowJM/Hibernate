@@ -1,6 +1,5 @@
 package nl.hu.dp.ovchip.dao;
 
-import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.Reiziger;
 import nl.hu.dp.ovchip.interfaces.AdresDAO;
 import nl.hu.dp.ovchip.interfaces.OvChipkaartDAO;
