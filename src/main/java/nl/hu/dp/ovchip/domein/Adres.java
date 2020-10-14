@@ -17,12 +17,13 @@ public class Adres {
     @JoinColumn(name= "reiziger_id")
     private Reiziger reiziger;
 
-    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, int reiziger_id) {
+    public Adres(int id, String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
         this.id = id;
         this.postcode = postcode;
         this.huisnummer = huisnummer;
         this.straat = straat;
         this.woonplaats = woonplaats;
+        this.reiziger = reiziger;
     }
 
     public Adres(){}

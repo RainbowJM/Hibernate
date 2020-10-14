@@ -72,8 +72,7 @@ public class Main {
 //        odao.setPdao(pdao);
 //        pdao.setOdao(odao);
 
-        testDAOHibernate(rdao);
-    //,adao,odao,pdao);
+        testDAOHibernate(rdao,adao);//,odao,pdao);
     }
 
     /**
@@ -97,7 +96,7 @@ public class Main {
         }
     }
 
-    private static  void testDAOHibernate(ReizigerDAO rdao){//, AdresDAO adao, OvChipkaartDAO odao, ProductDAO pdao){
+    private static  void testDAOHibernate(ReizigerDAO rdao, AdresDAO adao){//, OvChipkaartDAO odao, ProductDAO pdao){
         Session session = getSession();
         try{
             System.out.println("\n---------- Test ReizigerDAO -------------");
@@ -112,7 +111,7 @@ public class Main {
 
             // Maak een nieuwe reizigers aan en persisteer deze in de database
             String gbdatum1 = "1981-03-14";
-//            Reiziger sietske = new Reiziger(8, "S", "", "Boers", java.sql.Date.valueOf(gbdatum1));
+            Reiziger sietske = new Reiziger(8, "S", "", "Boers", java.sql.Date.valueOf(gbdatum1));
 //            rdao.save(sietske);
 //             xrdao.delete(sietske);
 
@@ -150,6 +149,45 @@ public class Main {
             // Find by birthday
             List<Reiziger> reizigerG = rdao.findByGbdatum(gbdatum1);
             System.out.println("[Test] ReizigerDAo.findByGbdatum() geeft \n" + reizigerG);
+
+            System.out.println("\n---------- Test AdresDAO -------------");
+
+            // Haal alle reizigers op uit de database
+            List<Adres> adressen = adao.findAll();
+            System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
+            for (Adres a : adressen) {
+                System.out.println(a);
+            }
+            System.out.println();
+
+            // Maak een nieuwe adressen aan en persisteer deze in de database
+            Adres a1 = new Adres(1, "3812RK", "13", "heidelberglaan", "Utrecht", sietske);
+            adao.save(a1);
+            adao.delete(a1);
+
+            Adres a2 = new Adres(2, "3832EK", "3", "laan", "Utrecht", ellen);
+            adao.save(a2);
+            adao.delete(a2);
+
+            System.out.print("[Test] Eerst " + adressen.size() + " adressen, na AdresDAO.save() ");
+            System.out.println("\n----------------------------");
+
+            // Haal alle reizigers op uit de database
+            List<Adres> nAdressen = adao.findAll();
+            System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
+            for (Adres a : nAdressen) {
+                System.out.println(a);
+            }
+            System.out.println();
+
+            adressen = adao.findAll();
+            System.out.println(adressen.size() + " reizigers\n");
+
+            // Delete de net aangemaakt adres
+            adao.delete(a2);
+            adressen = adao.findAll();
+            System.out.println(adressen.size() + " adressen na het verwijderen van de net aangemaakt adres\n");
+            System.out.println("\n----------------------------");
 
         } finally {
             session.close();

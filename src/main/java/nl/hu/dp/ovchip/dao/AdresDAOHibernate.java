@@ -16,9 +16,6 @@ public class AdresDAOHibernate implements AdresDAO {
         this.session = session;
     }
 
-    public void setAdao(AdresDAO adao){
-        this.adao = adao;
-    }
     @Override
     public boolean save(Adres adres) {
         try {
@@ -61,9 +58,7 @@ public class AdresDAOHibernate implements AdresDAO {
     @Override
     public Adres findById(int id) {
         try{
-            Transaction trans = session.beginTransaction();
             Adres adres = session.get(Adres.class, id);
-            trans.commit();
             return adres;
         }catch (Exception e){
             e.printStackTrace();
@@ -74,9 +69,7 @@ public class AdresDAOHibernate implements AdresDAO {
     @Override
     public Adres findByReiziger(Reiziger reiziger) {
         try{
-            Transaction trans = session.beginTransaction();
             Adres adres = session.get(Adres.class, reiziger.getReiziger_id());
-            trans.commit();
             return adres;
         }catch (Exception e){
             e.printStackTrace();
@@ -87,9 +80,7 @@ public class AdresDAOHibernate implements AdresDAO {
     @Override
     public List<Adres> findAll() {
         try{
-            Transaction trans = session.beginTransaction();
-            List<Adres> adresList = session.createQuery("FROM adres").list();
-            trans.commit();
+            List<Adres> adresList = session.createQuery("FROM adres",Adres.class).getResultList();
             return adresList;
         }catch (Exception e){
             e.printStackTrace();
