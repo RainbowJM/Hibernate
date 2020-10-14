@@ -10,7 +10,6 @@ import java.util.List;
 
 public class AdresDAOHibernate implements AdresDAO {
     private Session session;
-    private AdresDAO adao;
 
     public AdresDAOHibernate(Session session){
         this.session = session;
