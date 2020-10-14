@@ -61,18 +61,18 @@ public class Main {
         //DAO
         ReizigerDAOHibernate rdao = new ReizigerDAOHibernate(getSession());
         AdresDAOHibernate adao = new AdresDAOHibernate(getSession());
-//        OvChipkaartDAOHibernate odao = new OvChipkaartDAOHibernate(getSession());
+        OvChipkaartDAOHibernate odao = new OvChipkaartDAOHibernate(getSession());
 //        ProductDAOHibernate pdao = new ProductDAOHibernate(getSession());
 
 
         //relation
         rdao.setAdao(adao);
-//        rdao.setOdao(odao);
-//        odao.setRdao(rdao);
+        rdao.setOdao(odao);
+        odao.setRdao(rdao);
 //        odao.setPdao(pdao);
 //        pdao.setOdao(odao);
 
-        testDAOHibernate(rdao,adao);//,odao,pdao);
+        testDAOHibernate(rdao,adao,odao);//,pdao);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Main {
         }
     }
 
-    private static  void testDAOHibernate(ReizigerDAO rdao, AdresDAO adao){//, OvChipkaartDAO odao, ProductDAO pdao){
+    private static  void testDAOHibernate(ReizigerDAO rdao, AdresDAO adao, OvChipkaartDAO odao){//, ProductDAO pdao){
         Session session = getSession();
         try{
             System.out.println("\n---------- Test ReizigerDAO -------------");
@@ -121,7 +121,7 @@ public class Main {
 //        rdao.delete(ellen);
 
             System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-            System.out.println("\n----------------------------");
+            System.out.println("----------------------------");
 
             // Haal alle reizigers op uit de database
             List<Reiziger> nReizigers = rdao.findAll();
@@ -138,13 +138,13 @@ public class Main {
             rdao.delete(ellen);
             reizigers = rdao.findAll();
             System.out.println(reizigers.size() + " reizigers na het verwijderen van de net aangemaakt reiziger\n");
-            System.out.println("\n----------------------------");
+            System.out.println("----------------------------");
 
             // Find by id
             Reiziger reizigerId = rdao.findById(1);
             System.out.println("[Test] ReizigerDAO.findById() geeft: " + reizigerId);
             System.out.println();
-            System.out.println("\n----------------------------");
+            System.out.println("----------------------------");
 
             // Find by birthday
             List<Reiziger> reizigerG = rdao.findByGbdatum(gbdatum1);
@@ -162,15 +162,15 @@ public class Main {
 
             // Maak een nieuwe adressen aan en persisteer deze in de database
             Adres a1 = new Adres(1, "3812RK", "13", "heidelberglaan", "Utrecht", sietske);
-            adao.save(a1);
-            adao.delete(a1);
+//            adao.save(a1);
+//            adao.delete(a1);
 
             Adres a2 = new Adres(2, "3832EK", "3", "laan", "Utrecht", ellen);
-            adao.save(a2);
-            adao.delete(a2);
+//            adao.save(a2);
+//            adao.delete(a2);
 
             System.out.print("[Test] Eerst " + adressen.size() + " adressen, na AdresDAO.save() ");
-            System.out.println("\n----------------------------");
+            System.out.println("----------------------------");
 
             // Haal alle reizigers op uit de database
             List<Adres> nAdressen = adao.findAll();
@@ -184,10 +184,51 @@ public class Main {
             System.out.println(adressen.size() + " reizigers\n");
 
             // Delete de net aangemaakt adres
-            adao.delete(a2);
+//            adao.delete(a2);
             adressen = adao.findAll();
             System.out.println(adressen.size() + " adressen na het verwijderen van de net aangemaakt adres\n");
-            System.out.println("\n----------------------------");
+            System.out.println("----------------------------");
+
+            System.out.println("\n---------- Test OvChipkaartDAO -------------");
+
+            // Haal alle ovchipkaarten op uit de database
+            List<OvChipkaart> ovChipkaarten = odao.findAll();
+            System.out.println("[Test] OvChipkaartDAO.findAll() geeft de volgende ovchipkaarten:");
+            for (OvChipkaart o : ovChipkaarten) {
+                System.out.println(o);
+            }
+            System.out.println();
+
+            // Maak een nieuwe ovchipkaarten aan en persisteer deze in de database
+            String gdatum1 = "2030-03-14";
+            OvChipkaart o1 = new OvChipkaart(10977, java.sql.Date.valueOf(gdatum1),1,15,ellen);
+//            odao.save(o1);
+            //odao.delete(o1);
+
+            String gdatum2 = "2050-03-21";
+            OvChipkaart o2 = new OvChipkaart(24535, java.sql.Date.valueOf(gdatum2),2,40,sietske);
+//            odao.save(o2);
+            //odao.delete(o2);
+
+            System.out.print("[Test] Eerst " + ovChipkaarten.size() + " ovchipkaarten, na OvChipkaartDAO.save() ");
+            System.out.println("----------------------------");
+
+            // Haal alle reizigers op uit de database
+            List<OvChipkaart> nOvChipkaarten = odao.findAll();
+            System.out.println("[Test] OvChipkaartDAO.findAll() geeft de volgende ovchipkaarten:");
+            for (OvChipkaart o : nOvChipkaarten) {
+                System.out.println(o);
+            }
+            System.out.println();
+
+            ovChipkaarten = odao.findAll();
+            System.out.println(ovChipkaarten.size() + " ovchipkaarten\n");
+
+            // Delete de net aangemaakt adres
+            odao.delete(o2);
+            ovChipkaarten = odao.findAll();
+            System.out.println(ovChipkaarten.size() + " ovchipkaarten na het verwijderen van de net aangemaakt ovchipkaart\n");
+            System.out.println("----------------------------");
 
         } finally {
             session.close();

@@ -12,21 +12,19 @@ public class OvChipkaart {
     private Date geldig_tot;
     private int klasse;
     private int saldo;
-//    private int reiziger_id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
-//    @Transient
     @ManyToMany(mappedBy = "ovChipkaarten",cascade = CascadeType.ALL)
     private List<Product> producten = new ArrayList<>();
 
-    public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, int id) {
+    public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, Reiziger reiziger) {
         this.kaart_nummer = kaart_nummer;
         this.geldig_tot = geldig_tot;
         this.klasse = klasse;
         this.saldo = saldo;
-//        this.reiziger_id = id;
+        this.reiziger = reiziger;
     }
 
     public OvChipkaart(){}
@@ -46,10 +44,6 @@ public class OvChipkaart {
     public int getSaldo() {
         return saldo;
     }
-
-//    public int getReiziger_id() {
-//        return reiziger_id;
-//    }
 
     public Reiziger getReiziger() {
         return reiziger;
@@ -77,10 +71,6 @@ public class OvChipkaart {
         this.saldo = saldo;
     }
 
-//    public void setReiziger_id(int reiziger_id) {
-//        this.reiziger_id = reiziger_id;
-//    }
-
     public void setReiziger(Reiziger reiziger) {
         this.reiziger = reiziger;
     }
@@ -95,9 +85,8 @@ public class OvChipkaart {
                 "kaart_nummer = " + kaart_nummer +
                 ", geldig_tot = " + geldig_tot +
                 ", klasse = " + klasse +
-                ", saldo = " + saldo ;
-//                ", reiziger_id = " + reiziger_id+
-//                ", " + (reiziger == null ? "Reiziger: null" : reiziger.toString());
+                ", saldo = " + saldo +
+                ", " + (reiziger == null ? "Reiziger: null" : reiziger.toString());
     }
 }
 

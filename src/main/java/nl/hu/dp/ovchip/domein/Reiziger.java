@@ -93,7 +93,7 @@ public class Reiziger {
                 ", tussenvoegsel = " + tussenvoegsel +
                 ", achternaam = " + achternaam +
                 ", geboortedatum = " + geboortedatum+
-                ", " + (adres == null ? "Adres: null" : adres.toString())
-                + ", " + (ovChipkaarten == null ? "Ovchipkaart: null" : ovChipkaarten.toString());
+                ", " + (adres == null ? "Adres: null" : adres.toString());
+//                + ", " + (ovChipkaarten == null ? "Ovchipkaart: null" : ovChipkaarten.toString());
     }
 }
