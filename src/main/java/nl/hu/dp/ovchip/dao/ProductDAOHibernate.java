@@ -2,39 +2,81 @@ package nl.hu.dp.ovchip.dao;
 
 import nl.hu.dp.ovchip.domein.OvChipkaart;
 import nl.hu.dp.ovchip.domein.Product;
+import nl.hu.dp.ovchip.interfaces.OvChipkaartDAO;
 import nl.hu.dp.ovchip.interfaces.ProductDAO;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
 public class ProductDAOHibernate implements ProductDAO {
-    private SessionFactory factory;
+    private Session session;
+    private OvChipkaartDAO odao;
 
-    public ProductDAOHibernate(SessionFactory factory){
-        this.factory = factory;
+    public ProductDAOHibernate(Session session){
+        this.session = session;
     }
+
+    public void setOdao(OvChipkaartDAO odao){this.odao = odao;}
+
     @Override
     public boolean save(Product product) {
-        return false;
+        try {
+            Transaction trans = session.beginTransaction();
+            session.save(product);
+            trans.commit();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean update(Product product) {
-        return false;
+        try{
+            Transaction trans = session.beginTransaction();
+            session.update(product);
+            trans.commit();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean delete(Product product) {
-        return false;
+        try{
+            Transaction trans = session.beginTransaction();
+            session.delete(product);
+            trans.commit();
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public List<Product> findByOVChipkaart(OvChipkaart ovChipkaart) {
-        return null;
+        try{
+            List<Product> productList = session.createQuery("FROM product p LEFT JOIN ov_chipkaart_product ocp ON p.product_nummer = ocp.product_nummer WHERE kaart_nummer = '" +ovChipkaart.getKaart_nummer()+"'",Product.class).getResultList();
+            return productList;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<Product> findAll() {
-        return null;
+        try{
+            List<Product> productList = session.createQuery("FROM product ",Product.class).getResultList();
+            return productList;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

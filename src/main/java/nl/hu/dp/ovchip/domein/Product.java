@@ -10,9 +10,8 @@ public class Product {
     private int product_nummer;
     private String naam;
     private String beschrijving;
-    private int prijs;
+    private double prijs;
 
-//    @Transient
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "ov_chipkaart_product",
@@ -20,7 +19,7 @@ public class Product {
             inverseJoinColumns = {@JoinColumn(name = "kaart_nummer")})
     private List<OvChipkaart> ovChipkaarten = new ArrayList<>();
 
-    public Product(int product_nummer, String naam, String beschrijving, int prijs) {
+    public Product(int product_nummer, String naam, String beschrijving, double prijs) {
         this.product_nummer = product_nummer;
         this.naam = naam;
         this.beschrijving = beschrijving;
@@ -51,7 +50,7 @@ public class Product {
         return beschrijving;
     }
 
-    public int getPrijs() {
+    public double getPrijs() {
         return prijs;
     }
 
@@ -86,7 +85,8 @@ public class Product {
                 "product_nummer = " + product_nummer +
                 ", naam = " + naam +
                 ", beschrijving = " + beschrijving +
-                ", prijs = " + prijs ;
+                ", prijs = " + prijs
+                + ", " + (ovChipkaarten == null ? "Ovchipkaart: null" : ovChipkaarten.toString());
     }
 }
 

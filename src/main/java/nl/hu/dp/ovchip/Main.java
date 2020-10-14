@@ -62,17 +62,17 @@ public class Main {
         ReizigerDAOHibernate rdao = new ReizigerDAOHibernate(getSession());
         AdresDAOHibernate adao = new AdresDAOHibernate(getSession());
         OvChipkaartDAOHibernate odao = new OvChipkaartDAOHibernate(getSession());
-//        ProductDAOHibernate pdao = new ProductDAOHibernate(getSession());
+        ProductDAOHibernate pdao = new ProductDAOHibernate(getSession());
 
 
         //relation
         rdao.setAdao(adao);
         rdao.setOdao(odao);
         odao.setRdao(rdao);
-//        odao.setPdao(pdao);
-//        pdao.setOdao(odao);
+        odao.setPdao(pdao);
+        pdao.setOdao(odao);
 
-        testDAOHibernate(rdao,adao,odao);//,pdao);
+        testDAOHibernate(rdao,adao,odao,pdao);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Main {
         }
     }
 
-    private static  void testDAOHibernate(ReizigerDAO rdao, AdresDAO adao, OvChipkaartDAO odao){//, ProductDAO pdao){
+    private static  void testDAOHibernate(ReizigerDAO rdao, AdresDAO adao, OvChipkaartDAO odao, ProductDAO pdao){
         Session session = getSession();
         try{
             System.out.println("\n---------- Test ReizigerDAO -------------");
@@ -229,6 +229,41 @@ public class Main {
             ovChipkaarten = odao.findAll();
             System.out.println(ovChipkaarten.size() + " ovchipkaarten na het verwijderen van de net aangemaakt ovchipkaart\n");
             System.out.println("----------------------------");
+
+            System.out.println("\n---------- Test ProductDAO -------------");
+
+            // Haal alle producten op uit de database
+            List<Product> products = pdao.findAll();
+            System.out.println("[Test] ProductDAO.findAll() geeft de volgende producten:");
+            for (Product p : products) {
+                System.out.println(p);
+            }
+            System.out.println();
+
+            System.out.print("[Test] Eerst " + products.size() + " producten, na ProductDAO.save() ");
+            System.out.println("\n----------------------------");
+
+            // Maak een nieuwe producten aan en persisteer deze in de database
+            Product p1  = new Product(7,"Peanutbutter", "snack on the train",2.50);
+//            pdao.save(p1);
+//            pdao.delete(p1);
+
+            Product p2 = new Product(8,"Jelly","snack on the train",0.50);
+//           pdao.save(p2);
+//           pdao.delete(p2);
+
+            Product p3 = new Product(9,"Dal Voordeel 40%","40% korting buiten de spits en in het weekeind.",50);
+            pdao.save(p3);
+
+            p3.addOvChipkaart(o1);
+
+            // Haal alle reizigers op uit de database
+            List<Product> products1 = pdao.findAll();
+            System.out.println("[Test] ProductDAO.findAll() geeft de volgende producten:");
+            for (Product p : products1) {
+                System.out.println(p);
+            }
+            System.out.println();
 
         } finally {
             session.close();
